@@ -91,14 +91,13 @@ function addDept() {
         db.query(`INSERT INTO department (name) VALUES (?)`, data.newDepartment, function (err, res){
             if (err) return console.log(err);
             console.table(res);
-            console.table(department);
             beginPrompts();
         })
     })
 }
 
 function addRole() {
-    db.query(`SELECT * FROM department`, function (err, res) {
+    db.query(`SELECT * FROM department`, function (err, departments) {
         if (err) return console.log(err);
     
         inquirer.prompt([
@@ -115,20 +114,18 @@ function addRole() {
             {
                 type: 'list',
                 name: 'deptId',
-                message: 'Please choose the department in which to add the new role.' 
-                choices: function DeptId () {
-                    newArr = [];
-                    for(let i = 0; i < res.length; i++){
-                        newArr.push(res[i].name);
-                    }
-                    return newArr;
-                }
-            }
+                message: 'Please choose the department in which to add the new role.',
+                choices: departments.map(department => 
+                ({
+                    name: department.name,
+                    value: department.id    
+                })
+                )
+            }            
         ]).then(function (data) {
-            db.query(`INSERT INTO role (title, salery, department_id) VALUES (?,?,?)`, data.deptID, function (err, res){
+            db.query(`INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`, [data.newRole, data.newSalary, data.deptId], function (err, res){
                 if (err) return console.log(err);
                 console.table(res);
-                console.table(department);
                 beginPrompts();
             })
         })
