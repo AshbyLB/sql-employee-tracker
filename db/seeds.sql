@@ -1,7 +1,7 @@
 INSERT INTO department (`name`)
 VALUES ("Front of House"),
        ("Back of House"),
-       ("Box Office")
+       ("Box Office"),
        ("Security");
 
 INSERT INTO role (`title`, `salary`, `department_id`)
@@ -20,7 +20,7 @@ VALUES ("CSR", 25000, 3),
        ("Production Manager", 50000, 2),
        ("Stage Door Security", 30000, 4),
        ("Lobby Security", 30000, 4),
-       ("Talent Security Guard", 30000, 4)
+       ("Talent Security Guard", 30000, 4),
        ("Security Lead", 30000, 4);
 
 
@@ -29,4 +29,8 @@ INSERT INTO employee (`first_name`, `last_name`, `role_id`, `manager_id`)
 VALUES ("Tommy", "Tickles",9, NULL),
        ("Randy", "Rockstar",13, NULL),
        ("Richard", "Soggybottom", 5, NULL),
-       ("Jesse","Jawbreaker" 17, NULL);
+       ("Jesse","Jawbreaker", 17, NULL);
+
+SELECT * FROM department;
+SELECT * FROM role;
+SELECT * FROM employee;
