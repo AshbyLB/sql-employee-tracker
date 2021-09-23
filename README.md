@@ -1,7 +1,7 @@
 # SQL Employee Tracker
     
 ## Description
-use this application to generate a team profile page with your teams info.
+Use this application to keep track of the employees in your company.
 
 ## Table of Contents
 - [Usage](#Usage)
@@ -14,19 +14,19 @@ use this application to generate a team profile page with your teams info.
 - [Questions](#Questions)
 
 ## Usage
-You can use this program to quickly and effeciently create an HTML page based on your feedback when prompted to respond to questions in the terminal. 
+You can use this program to quickly and effeciently check, update or remove an employee's title, department, salary, and employment with the company. 
 
 ## Installation
-In the programs lib dir, use node to begin the program.  node script.js
+In the SQL Employee Tracker folder, run an npm install and then an npm start. Follow the prompts. 
 
 ## Contributing 
 Ashby Blakely 
 
 ## Tutorial
-[Video Walkthrough](https://drive.google.com/file/d/1lCxqV2jz8PY1MmRP5pMHFgsZ69DqRraI/view?usp=sharing)
+[Video Walkthrough]()
 
 ## Screenshot
-![screenshot](./img/teamprofile.JPG)
+![screenshot]()
 
 ## License
 MIT
@@ -35,5 +35,3 @@ MIT
 [Link to GitHub Profile](https://github.com/AshbyLB)<br/>
 Feel free to email me at ashbyleeblakely@gmail.com if you have any questions.
 
-
-    
