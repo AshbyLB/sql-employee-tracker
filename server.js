@@ -73,7 +73,12 @@ function viewRoles() {
 };
 
 function viewEmps() {
-    db.query(`SELECT * FROM employee`, function (err, res) {
+    db.query(
+        `SELECT employee.id,employee.first_name, employee.last_name, role.title AS job_title, department.name AS department, role.salary FROM employee
+        JOIN role ON role.id = employee.role_id
+        JOIN department ON role.department_id = department.id
+        ORDER BY department_id`
+    , function (err, res) {
         if (err) return console.log(err);
         console.table(res);
         beginPrompts();
@@ -90,7 +95,6 @@ function addDept() {
     ]).then(function (data) {
         db.query(`INSERT INTO department (name) VALUES (?)`, data.newDepartment, function (err, res){
             if (err) return console.log(err);
-            console.table(res);
             beginPrompts();
         })
     })
@@ -109,7 +113,7 @@ function addRole() {
             {
                 type: 'input',
                 name: 'newSalary',
-                message: 'Please provide the salayr for this role.' 
+                message: 'Please provide the salary for this role.' 
             },
             {
                 type: 'list',
@@ -126,6 +130,64 @@ function addRole() {
             db.query(`INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`, [data.newRole, data.newSalary, data.deptId], function (err, res){
                 if (err) return console.log(err);
                 console.table(res);
+                beginPrompts();
+            })
+        })
+    });
+    }
+
+    function addEmp() {
+    db.query(`SELECT * FROM role`, function (err, newRole) {
+        if (err) return console.log(err);
+    
+        inquirer.prompt([
+            {
+                type: 'input',
+                name: 'firstName',
+                message: 'What is the first name of the new employee?'
+            },
+            {
+                type: 'input',
+                name: 'lastName',
+                message: 'What is the last name of the employee?' 
+            },
+            {
+                type: 'list',
+                name: 'newEmpRole',
+                message: 'Please choose the role of the new employee.',
+                choices: newRole.map(role => 
+                ({
+                    name: role.title,
+                    value: role.id  
+                })
+                )
+            },
+            {
+                type: 'list',
+                name: 'newMngr',
+                message: 'Please choose the Manager of the new employee.',
+                choices: [
+                    {
+                        name: 'Tommy Tickles',
+                        value: 1
+                    },
+                    {
+                        name: 'Randy Rockstar',
+                        value: 2
+                    },
+                    {
+                        name: 'Richard Soggybottom',
+                        value: 3
+                    },
+                    {
+                        name: 'Jesse Jawbreaker',
+                        value: 4
+                    }
+                ]
+            }          
+        ]).then(function (data) {
+            db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`, [data.firstName, data.lastName, data.newEmpRole, data.newMngr], function (err, res){
+                if (err) return console.log(err);
                 beginPrompts();
             })
         })
