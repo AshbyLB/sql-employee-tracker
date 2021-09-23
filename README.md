@@ -23,10 +23,11 @@ In the SQL Employee Tracker folder, run an npm install and then an npm start. Fo
 Ashby Blakely 
 
 ## Tutorial
-[Video Walkthrough]()
+[Video Walkthrough 1](https://drive.google.com/file/d/1UXLXnmQN6pK05UQpZywAa02kSSE_jSgm/view?usp=sharing)<br/>
+[Video Walkthrough 2](https://drive.google.com/file/d/1HTioMNjLTpac_r7AKFTZIqsAPmyWoSLn/view?usp=sharing)
 
 ## Screenshot
-![screenshot]()
+![screenshot](./assets/imgs/employeetracker.JPG)
 
 ## License
 MIT
