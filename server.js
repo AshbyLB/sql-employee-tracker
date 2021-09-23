@@ -45,7 +45,7 @@ function beginPrompts() {
         } else if (data.initialPrompts === 'Add an Employee') {
             addEmp();
         } else if (data.initialPrompts === 'Update an Employee Role') {
-            updateEmp();
+            updateRole();
         } else {
             console.log('Goodbye');
         }
@@ -78,11 +78,11 @@ function viewEmps() {
         JOIN role ON role.id = employee.role_id
         JOIN department ON role.department_id = department.id
         ORDER BY department_id`
-    , function (err, res) {
-        if (err) return console.log(err);
-        console.table(res);
-        beginPrompts();
-    });
+        , function (err, res) {
+            if (err) return console.log(err);
+            console.table(res);
+            beginPrompts();
+        });
 };
 
 function addDept() {
@@ -93,7 +93,7 @@ function addDept() {
             message: 'Please provide the name of the new department.'
         }
     ]).then(function (data) {
-        db.query(`INSERT INTO department (name) VALUES (?)`, data.newDepartment, function (err, res){
+        db.query(`INSERT INTO department (name) VALUES (?)`, data.newDepartment, function (err, res) {
             if (err) return console.log(err);
             beginPrompts();
         })
@@ -103,7 +103,7 @@ function addDept() {
 function addRole() {
     db.query(`SELECT * FROM department`, function (err, departments) {
         if (err) return console.log(err);
-    
+
         inquirer.prompt([
             {
                 type: 'input',
@@ -113,33 +113,33 @@ function addRole() {
             {
                 type: 'input',
                 name: 'newSalary',
-                message: 'Please provide the salary for this role.' 
+                message: 'Please provide the salary for this role.'
             },
             {
                 type: 'list',
                 name: 'deptId',
                 message: 'Please choose the department in which to add the new role.',
-                choices: departments.map(department => 
+                choices: departments.map(department =>
                 ({
                     name: department.name,
-                    value: department.id    
+                    value: department.id
                 })
                 )
-            }            
+            }
         ]).then(function (data) {
-            db.query(`INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`, [data.newRole, data.newSalary, data.deptId], function (err, res){
+            db.query(`INSERT INTO role (title, salary, department_id) VALUES (?,?,?)`, [data.newRole, data.newSalary, data.deptId], function (err, res) {
                 if (err) return console.log(err);
                 console.table(res);
                 beginPrompts();
             })
         })
     });
-    }
+}
 
-    function addEmp() {
+function addEmp() {
     db.query(`SELECT * FROM role`, function (err, newRole) {
         if (err) return console.log(err);
-    
+
         inquirer.prompt([
             {
                 type: 'input',
@@ -149,16 +149,16 @@ function addRole() {
             {
                 type: 'input',
                 name: 'lastName',
-                message: 'What is the last name of the employee?' 
+                message: 'What is the last name of the employee?'
             },
             {
                 type: 'list',
                 name: 'newEmpRole',
                 message: 'Please choose the role of the new employee.',
-                choices: newRole.map(role => 
+                choices: newRole.map(role =>
                 ({
                     name: role.title,
-                    value: role.id  
+                    value: role.id
                 })
                 )
             },
@@ -184,13 +184,41 @@ function addRole() {
                         value: 4
                     }
                 ]
-            }          
+            }
         ]).then(function (data) {
-            db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`, [data.firstName, data.lastName, data.newEmpRole, data.newMngr], function (err, res){
+            db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)`, [data.firstName, data.lastName, data.newEmpRole, data.newMngr], function (err, res) {
                 if (err) return console.log(err);
                 beginPrompts();
             })
         })
     });
-    }
-    
+}
+
+function updateRole() {
+    db.query(`SELECT * FROM employee`, function (err, name) {
+        if (err) return console.log(err);
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'empName',
+                message: 'Please choose the name of the employee you would like to change.',
+                choices: name.map(nRole =>
+                ({
+                    name: nRole.first_name + " " + nRole.last_name,
+                    value: nRole.id
+                }))
+            },
+            {
+                type: 'input',
+                name: 'empId',
+                message: 'Please enter the ID that corresponds with the new role',
+            }
+        ]).then(function (data) {
+            db.query("UPDATE employee SET role_id = ? WHERE id = ?", [data.empId, data.empName], function (err) {
+                if (err) return console.log(err);
+                beginPrompts();
+            })
+        })
+    })
+}
