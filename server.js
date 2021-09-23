@@ -48,6 +48,7 @@ function beginPrompts() {
             updateRole();
         } else {
             console.log('Goodbye');
+            process.exit();
         }
     }).catch((err) => {
         console.log(err);
@@ -222,4 +223,4 @@ function updateRole() {
             })
         })
     })
-}
+};
