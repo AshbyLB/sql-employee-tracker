@@ -74,7 +74,8 @@ function viewRoles() {
 
 function viewEmps() {
     db.query(
-        `SELECT employee.id,employee.first_name, employee.last_name, role.title AS job_title, department.name AS department, role.salary FROM employee
+        `SELECT employee.id,employee.first_name, employee.last_name, role.title AS job_title, department.name AS department, role.salary, employee.manager_id FROM employee
+        LEFT JOIN employee AS manager ON employee.manager_id = manager.id
         JOIN role ON role.id = employee.role_id
         JOIN department ON role.department_id = department.id
         ORDER BY department_id`
